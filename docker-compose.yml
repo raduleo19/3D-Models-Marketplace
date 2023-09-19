@@ -1,0 +1,107 @@
+version: "3.9"
+
+services:
+  backend:
+    image: modelstore-back:latest
+    container_name: modelstore-back
+    ports:
+      - "8000:8000"
+    networks:
+      - mongo-network
+      - backend-network
+      - rabbitmq-network
+    depends_on:
+      - mongo
+      - rabbitmq
+    restart: always
+
+  frontend:
+    image: modelstore-front:latest
+    container_name: modelstore-front
+    ports:
+      - "9000:80"
+    networks:
+      - backend-network
+    depends_on:
+      - backend
+
+  mailer:
+    image: modelstore-mailer:latest
+    container_name: modelstore-mailer
+    networks:
+      - mongo-network
+      - rabbitmq-network
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  voxelizer:
+    image: modelstore-voxelizer:latest
+    container_name: modelstore-voxelizer
+    networks:
+      - mongo-network
+      - rabbitmq-network
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "0.0.0.0:27017:27017"
+    networks:
+      - mongo-network
+    volumes:
+      - type: volume
+        source: mongo-data
+        target: /data/db
+      - type: volume
+        source: mongo-config
+        target: /data/configdb
+    restart: always
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "0.0.0.0:5672:5672"
+      - "0.0.0.0:15672:15672"
+    volumes:
+      - 'rabbitmq-data:/data'
+    networks:
+      - rabbitmq-network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: "27017"
+    ports:
+      - "0.0.0.0:8081:8081"
+    networks:
+      - mongo-network
+    depends_on:
+      - mongo
+    restart: always
+
+networks:
+  backend-network:
+    name: backend
+  mongo-network:
+    name: MONGO
+  rabbitmq-network:
+    name: rabbitmq
+
+volumes:
+  mongo-data:
+    name: MONGO_DATA
+  mongo-config:
+    name: MONGO_CONFIG
+  rabbitmq-data:
+    name: rabbitmq-data

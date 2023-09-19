@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./app.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.341.0",
+    "@aws-sdk/lib-storage": "^3.341.0",
+    "@ngneat/falso": "^6.4.0",
+    "ampq": "^2019.5.11",
+    "amqp": "^0.2.7",
+    "amqplib": "^0.10.3",
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.1.0",
+    "express": "^4.18.2",
+    "falso": "^0.0.0",
+    "http-errors": "~1.6.3",
+    "jade": "^1.9.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.3.0",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.20"
+  }
+}

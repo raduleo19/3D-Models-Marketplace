@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "dotenv": "^16.3.1",
+    "googleapis": "^120.0.0",
+    "mongoose": "^7.3.1",
+    "nodemailer": "^6.9.3"
+  }
+}
